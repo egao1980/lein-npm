@@ -120,4 +120,4 @@
 
 (defn install-hooks []
   (robert.hooke/add-hook #'leiningen.deps/deps wrap-deps)
-  (robert.hooke/add-hook #'leiningen.compile/deps compile-hook))
+  (robert.hooke/add-hook #'leiningen.compile/compile compile-hook))
