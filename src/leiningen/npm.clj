@@ -7,7 +7,8 @@
             [leiningen.npm.process :refer [exec iswin]]
             [leiningen.npm.deps :refer [resolve-node-deps]]
             [robert.hooke]
-            [leiningen.deps]))
+            [leiningen.deps]
+            [leiningen.compile]))
 
 (defn- root [project]
   (if-let [root (project :npm-root)]
@@ -112,5 +113,11 @@
   (apply f args)
   (install-deps (first args)))
 
+(defn compile-hook [task & [project & more-args :as args]]
+  (doseq [script (get-in project [:nodejs :compile])]
+    (npm project script))
+  (apply task args))
+
 (defn install-hooks []
-  (robert.hooke/add-hook #'leiningen.deps/deps wrap-deps))
+  (robert.hooke/add-hook #'leiningen.deps/deps wrap-deps)
+  (robert.hooke/add-hook #'leiningen.compile/deps compile-hook))
