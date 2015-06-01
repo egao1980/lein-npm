@@ -115,7 +115,7 @@
 
 (defn compile-hook [task & [project & more-args :as args]]
   (doseq [script (get-in project [:nodejs :compile])]
-    (npm project script))
+    (npm project "run" script))
   (apply task args))
 
 (defn install-hooks []
